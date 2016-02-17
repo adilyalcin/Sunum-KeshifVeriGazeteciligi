@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Veri Gazeteciliği ve Keshif</title>
+
+		<meta name="description" content="Presentation">
+		<meta name="author" content="Adil Yalcin">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+    <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+
+		<!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- keshif stuff -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://keshif.me/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://keshif.me/js/d3.3.5.5.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="http://keshif.me/keshif.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://keshif.me/keshif.css"/ type="text/css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+<style>
+.myTitle{
+  font-size: 1.5em !important;
+  display:block;
+  margin-bottom: 1em !important;
+}
+.myAuthorName{
+  font-size: 1.2em;
+  display:block;
+  margin-bottom: 1em !important;
+}
+img{
+  box-shadow: none !important;
+  border-width: 0px !important;
+}
+.no_shadow{
+  box-shadow: none !important;
+  border-width: 0px !important;
+}
+.justActiveFragment:not(.current-fragment){
+  display: none !important;
+  height:0px;
+  line-height: 0px;
+  font-size: 0px;
+}
+.thinking{
+  color: gray;
+  font-size: 0.9em !important;
+}
+.thinking_ans{
+  font-size: 1.4em !important;
+  font-weight: 600 !important;
+}
+.asdasdas{
+  margin-bottom: 25px !important;
+}
+.asdasdas .figName{
+  color: orangered;
+}
+.asdasdas img{
+  margin: 0 !important;
+}
+.youSaid{
+  font-family: 'Indie Flower', cursive !important;
+}
+#visForBlock{
+  height: 25px; 
+  width: 25px;
+  left: 0px;
+  position: absolute;
+  top: -9px;
+  background-color: orangered;
+  border-radius: 20px;
+  -webkit-transition: left 2000ms ease-in-out;
+  -moz-transition: left 2000ms ease-in-out;
+  -o-transition: left 2000ms ease-in-out;
+  transition: left 2000ms ease-in-out;
+}
+.edu:before{ content: "."; }
+.twitLink{
+  color:#55ACEE !important;
+}
+.keshifLogo{
+  height: 1.2em;
+  position: relative;
+  top: 7px;
+  margin: 0px -6px 0px 0px !important;
+}
+
+#AnscombeWrapper > .dataSet{
+  width: 23%;
+  margin: 0px 2px;
+  /*border: solid 1px black;*/
+  display: inline-block;
+  position: relative;
+  height: 500px;
+}
+
+#AnscombeWrapper > .dataSet > .datasetName{
+  font-weight: 700;
+  text-align: center;
+  text-decoration: underline;
+}
+#AnscombeWrapper .rawData{ display: none;}
+#AnscombeWrapper[chartType="raw"] .rawData{ display: block;}
+#AnscombeWrapper[chartType="raw"] .dataSet{
+  display: none;
+}
+#AnscombeWrapper[chartType="raw"] .dataSet{
+  display: none;
+}
+
+#AnscombeWrapper[chartType="table"] .dataPoint{
+  position: absolute;
+  width: 100%;
+  left: 0px;
+}
+.summaryNum{
+  position: relative;
+  height: 40px;
+}
+.summaryNum .textForX{
+  width: 40px;
+}
+
+#AnscombeWrapper[chartType="table"] .textForX{
+  position: absolute;
+  left: 50px;
+  text-align: right;
+  display: block;
+}
+#AnscombeWrapper[chartType="table"] .textForY{
+  position: absolute;
+  left: 120px;
+}
+.hiddenPadding{ 
+  display: none;
+  visibility: hidden;
+}
+.dataPointWrapper{ position: relative;}
+
+.summaryText{
+  font-size: 0.7em !important;
+}
+.summaryType{
+  font-weight: 700 !important;
+}
+.summaryHeader{
+  margin-top: 50px !important;
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  text-decoration: underline;
+}
+.rawDataText{
+  background-color: white;
+}
+.pointDot{
+  /* display: none; */
+  background-color: rgb(255,166, 0);
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  display: block;
+  border-radius: 20px;
+  left: calc(50% - 10px);
+  top: 0.4em;
+  opacity: 0;
+  border: solid 2px rgb(141, 101, 28) !important;
+}
+.axisName{
+  position: absolute;
+  font-weight: 700;
+  font-size: 0.7em !important;
+  color: gray;
+}
+.axisTicks{
+  position: absolute;
+  font-size: 0.5em !important;
+  width: 20px;
+  color: gray;
+  display: block;
+}
+.ticks_X{
+  text-align: center;
+}
+.ticks_Y{
+  text-align: right;
+}
+.ticks_X:before{
+  width: 1px;
+  background-color: gray;
+  height: 10px;
+  position: relative;
+  left: 10px;
+  top: -4px;
+  content: "";
+  display: block;
+  margin-bottom: -6px;
+}
+.ticks_Y:before{
+  width: 10px;
+  background-color: gray;
+  height: 1px;
+  position: absolute;
+  right: -10px;
+  top: 10px;
+  content: "";
+  display: block;
+  margin-bottom: -6px;
+}
+
+.slide232adsua{
+  color: white;
+  text-shadow: 0px 0px 2px black, 0px 0px 2px black, 0px 0px 5px black, 0px 0px 15px black;
+  font-weight: 700;
+}
+</style>
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+      <section>
+        <span class="myTitle">Keshif (Keşif) <br>ve <br> Veri Gazeteciği</span>
+        <span class="myAuthorName">M. Adil Yalçın</span>
+        <img src="img/hcil_logo.gif" class="no_shadow" style="float:left;" width="160" height="160">
+        <img src="img/umd_logo.svg" class="no_shadow" style="float:right;" width="160" height="160">
+
+        <div>
+          <small>İzmir Yerel Medya ve Sivil Toplum İçin Veri Gazeteciliği Atölyesi</small><br>
+          <small>20 Şubat, 2016</small><br>
+          <img src="img/cs_logo.svg" class="no_shadow" width="360">
+        </div>
+
+        <aside class="notes">
+          CS, UMD, Ben Bederson and Niklas Elmqvist
+          </aside>
+				</section>
+
+      <section>
+        <h4>Merhaba!</h4>
+
+        <a href='http://www.keshif.me' target='_blank'>www.keshif.me</a>
+        <span style='display: block; margin-left: 10px; font-size: 0.8em; color: gray'>
+          <a href='http://outdatedbrowser.com/tr' target='_blank' style="color: gray; text-decoration: none;">
+            <i class='fa fa-chrome'></i>
+            <i class='fa fa-firefox'></i>
+            <i class='fa fa-safari'></i>
+            </a>
+          </span>
+        <img src='img/keshif.gif'>
+      </section>
+
+      <section data-background='img/landscape-nature-man-person.jpeg' class='slide232adsua'>
+        <div style='font-size: 2em;
+    color: #586255;
+    font-weight: 700;
+    text-shadow: 0px 0px 15px white, 0px 0px 5px white, 0px 0px 5px white;'>KEŞİF!</div>
+        <ul>
+          <li class='fragment'>Anlasilabilir veri analizi icin arayuz</li>
+          <li class='fragment'>Bilinmeyen sorular.<br>Beklenmeyen sonuclar, iliskiler, yorumlar...</li>
+          <li class='fragment'>Serbest perspektif ve soru secimi</li>
+          <li class='fragment'>Hikayeye, habere giden yollarin kesfi</li>
+          <li class='fragment'>Web tabanli kullanim ve paylasim</li>
+        </ul>
+      </section>
+
+      <section data-background='img/siddet.jpg' class='slide232adsua'>
+        <div style='margin-bottom: 0.5em; font-size: 1.5em;'>Ornek: Kadin Cinayetleri</div>
+        
+        <div class='fragment' style='margin-bottom: 0.5em;'> Kaynak:
+          <a href='http://www.anitsayac.com/' target='_blank'>www.AnitSayac.com</a>
+          </div>
+
+        <div class='fragment' style='margin-bottom: 0.5em;'>
+          <a href='https://docs.google.com/spreadsheets/d/1w9O47uvTpJRG7FetXC0U2cSk2BjLu4tOQfJGOWDPkDM/' target="_blank">
+          <i class='fa fa-table'></i> Veri Tablosu</a></div>
+        <div class='fragment' style='margin-bottom: 0.5em;'>
+          <i class=='fa fa-question-circle'></i> Ne zaman? 
+          <i class=='fa fa-question-circle'></i> Kim tarafindan?
+          <i class=='fa fa-question-circle'></i> Hangi nedenle?
+          <i class=='fa fa-question-circle'></i> Kaynak?
+          <i class=='fa fa-question-circle'></i> Korunma talebi?
+          <i class=='fa fa-question-circle'></i> Yargilama sonucu? </div>
+        <div class='fragment' style='margin-bottom: 0.5em;'>
+          <a href="http://keshif.me/demo/kadin_olumleri" target='_blank' style='color: orangered'>keshif.me/demo/kadin_olumleri</a>
+          </div>
+        <div style='position: absolute; right: 20px; bottom: 00px; font-size: 0.5em;'>
+          <a href='https://www.flickr.com/photos/european_parliament/4403827916' target='blank'>Fotoğraf Kaynak</a>
+          </div>
+      </section>
+
+      <section>
+        <a href='https://docs.google.com/document/d/1WxUH_22Opq1bU40bwRkzOvapanO3adYKzC0m021-Kao' target='_blank'>
+          Kadin cinayetleri uzerine proje?</a>
+          <br><br>
+          <u>Icerik</u><br>
+          <ul>
+            <li>Kolay erisilebilir degil</li>
+            <li>Guvenilir degil, kaynaklar belirsiz</li>
+            <li>Eksik (ve eksiklikler belirsiz)</li>
+            <li>Farkli organizasyonlar farkli veri</li>
+            <li>Karsilastirma zor</li>
+            <li>Yasal/toplumsal baglam ne?</li>
+          </ul>
+      </section>
+
+      <section >
+        <div style='margin-bottom: 0.5em; font-size: 1.5em;'>Ornek: Öldürülen Gazeteciler</div>
+        <a href="http://keshif.me/demo/OldurulenGazeteciler"> keshif.me/demo/OldurulenGazeteciler</a>
+        <div class='fragment' style='font-size: 0.8em; margin-top: 1em;'>
+          <a href='https://github.com/adilyalcin/Keshif/blob/master/demo/OldurulenGazeteciler.html' target='_blank'>
+            Kaynak kod
+          </a><br><br>
+          Turkce dil destegi (deneysel)<br>
+          <pre style='width: 35%; text-align: center;'>kshf.lang.cur = kshf.lang.tr;</pre>
+        </div>
+        </section>
+
+      <section>
+        <div style='margin-bottom: 1em;'>
+          Yeni Data Keshif'i: 
+          <a href="http://keshif.me/demo/YourData" target='_blank' style='color: orangered'>keshif.me/demo/YourData</a>
+          </div>
+        <div class='fragment' style='margin-bottom: 0.5em;'>
+          <u>Data kaynagi</u><br>
+          <ul>
+            <li>Google Sheet URL <br>
+              <span style='color: gray; font-size: 0.7em;'>(Kolay kaynak paylasimi ve isbirligi)</span></li>
+            <li>Sheet Name (Tablo ismi)</li>
+            <li>En az ~50 satir veri</li>
+          </ul>
+          </div>
+        <div class='fragment'>
+          <a href='https://github.com/adilyalcin/Keshif/wiki/Guidelines-for-Data-Preparation' target='_blank'>
+            Data Hazirlama Kilavuzu
+          </a> (Ingilizce)<br>
+          <a href='https://www.youtube.com/watch?v=3Hmvms-1grU' target='_blank'> 5-dakikalik tutorial video</a> (Ingilizce)
+          </div>
+      </section>
+
+      <section>
+        <h4>Gerekli Yetenekler</h4>  
+        <ul>
+          <li>Veri arastirma ve dogrulama</li>
+          <li>Dogru ve etkili veri yorumlama</li>
+          <li>Sonuclarin halkla efektif paylasimi</li>
+        </ul>
+        <div class='fragment' style='margin-top: 1em;'>
+          <h4>Yardimci Yetenekler</h4>  
+          <ul>
+            <li>Temel web arayuzu gelistirme:<br>
+              (HTML, JavaScript, CSS)</li>
+            <li>Ingilizce (kaynaklar icin)</li>
+          </ul>
+          </div>
+      </section>
+
+      <section>
+        <h4>Ornek Amaclar</h4>  
+        <ul>
+          <li class='fragment'>Onemli, uygun sonuclara odaklanmak (kesif -> bilgi) </li>
+          <li class='fragment'>Halka hizmet, halkin efektif sekilde bilgilenmesi</li>
+          <li class='fragment'>Gerekli sosyal, teknik ve hukuksal baglami incelemek ve aktarmak</li>
+          <li class='fragment'>Gelecek calismalar icin ornek olmak</li>
+          <li class='fragment'>Cok-yonlu grup calismalari:<br>Teknik, sosyal, iletisim, arastirma...</li>
+        </ul>
+      </section>
+
+      <section>
+        <span class="">
+          <span style="font-weight:700;"> Teşekkürler!</span><br><br>
+            </span>
+          <u>İletişim</u><br>
+          <div><a href='http://www.twitter.com/adilyalcin' target='_blank' class='twitLink'>
+            <i class='fa fa-twitter'></i>adilyalcin</a></div>
+          <div><i class='fa fa-envelope'></i> yalcin<i class='fa fa-at'></i>umd<span class='edu'>edu</span></div>
+          <div><i class='fa fa-home'></i> adilyalcin.me</div><br>
+
+        <div style='font-size: 0.8em;'>
+          <a href='http://keshif.me'>keshif.me</a>, 
+          <a href='http://www.twitter.com/keshifjs' target='_blank' class='twitLink'>
+            <i class='fa fa-twitter'></i>keshifjs</a>
+          <div>Açık kaynak:<a href='http://www.github.com/adilyalcin/keshif' target='_blank'>
+            <i class='fa fa-github'></i> adilyalcin/keshif</a></div>
+          </div>
+
+        <img src="img/hcil_logo.gif" class="no_shadow" style="float:left;" width="160" height="160">
+        <img src="img/umd_logo.svg" class="no_shadow" style="float:right;" width="160" height="160">
+
+        <br><br><div>
+          <img src="img/cs_logo.svg" class="no_shadow" width="360">
+        </div>
+      </section>
+
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
